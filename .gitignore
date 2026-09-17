@@ -1,0 +1,127 @@
+# .gitignore syntax
+#
+# # comment
+#   Comments begin with #; escape it as \# when matching a literal #.
+#
+# example.py
+#   Without /, the pattern matches at any directory level.
+#
+# /example.py
+#   A leading / anchors the pattern to this repository root.
+#
+# example/
+#   A trailing / matches directories only.
+#   Note - When a symlink point to a directory:
+#   - <symlink>/ would match the directory content
+#   - <symlink> would only match the symlink itself
+#
+# *.pyc
+#   * matches any characters except /. This matches *.pyc at any level.
+#
+# a/**/b
+#   ** matches zero or more directories, so this matches a/b and a/x/y/b.
+#
+# /**.pyc
+#   This is root-anchored and is not equivalent to *.pyc.
+#
+# ?.tmp and [abc].tmp
+#   ? matches one character; [abc] matches one listed character.
+#
+# !example.py
+#   ! re-includes a path. Rules are applied top to bottom, so order matters.
+#
+# output/*
+#   Ignore a directory's contents while keeping the directory itself.
+#   A negation cannot re-include a file inside an ignored parent directory.
+
+
+#
+#   Blacklist
+#
+
+# Global Conventions
+.*
+_*
+
+# credentials
+*.crt
+
+# runtime output
+# > ignore any root cache directories
+# > keep the output directory but not its content
+# > ignore the storage symlink
+/*cache*
+/output/*
+/storage
+
+# tooling output files
+*.egg-info
+*.log
+*nbqa*.py
+
+# root local config files
+/cspell.config.yaml
+/justfile
+
+# root folders for tooling
+/*log*
+/build/
+/dist/
+/Formula/
+/report/
+/temp/
+/tmp/
+
+# .agents symlinks
+/.github/copilot-instructions.md
+/.github/hooks
+/AGENTS.md
+harnesses/claude/skills/
+
+
+#
+#   Whitelist
+#
+
+# allow __ module files (e.g. __init__.py); __ dirs like __pycache__ stay ignored
+!__*.*
+
+# allow common Git metadata files
+# > !.git* also matches .git, but git hard-codes skipping the .git dir
+!.git*
+
+# allow ci required config folders
+!/.ci/
+!/.infra/
+
+# allow ci required config files
+!/.coveragerc
+!/.env-*template*
+!/.python-version
+
+# allowed symlinked content for agent discovery
+# > trailing / matches directories only, so symlinks stay untracked
+!/.agents/
+!/.vscode/
+
+#
+#   Exceptions
+#
+
+# Serena defect workaround
+# > `gather_source_files` walks with followlinks=True and matches with pathspec,
+# > not git, so `!/.agents/` above un-ignores this self-link subtree; this rule
+# > must be the last match or the walk hits ELOOP and re-enumerates the shared
+# > tree once per level. Porter recreates the link, so it cannot be deleted.
+.agents/.agents
+
+# File-walker workaround
+# > `!.git*` above keeps `.gitignore`, `.gitattributes`, and `.gitkeep` trackable
+# > under `.*`, but walkers that read gitignore files as their ignore source
+# > (ripgrep, VS Code search, fd) also un-hide real `.git` stores with it; git
+# > itself hard-codes skipping `.git`, so this must stay the last match.
+.git/
+
+#
+#   Repo-specific Entries
+#

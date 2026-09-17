@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../porter/schemas/manifest.json
+---
+#
+# component metadata
+#
+private: true
+
+languages:
+  - markdown
+
+name: blog
+type: template
+
+github: ""
+
+ci: ""
+
+#
+# component repo config
+#
+
+config: ../pymap
+
+# config file declaration
+
+symlink:
+  - .cspell
+  - .editorconfig
+  - .markdownlint.yaml
+  - .vscode
+  - cspell.config.yaml
+
+agents: ../.agents
+
+# repo local customization
+# > the key's presence — not its content — registers .gitignore as a managed
+# > output, so the shared rules above the `# Repo-specific Entries` boundary
+# > keep refreshing from pymap; entries below that boundary survive
+# > `porter config` verbatim, so a rule declared both here and below is
+# > appended twice — keep each rule in exactly one place.
+.gitignore: []
