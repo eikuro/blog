@@ -9,7 +9,7 @@ description: How one authored copy of every shared file, a configuration compile
 
 # One Workspace, Two Shapes
 
-The Aurora workspace can be opened as the single parent folder that holds every
+The workspace can be opened as the single parent folder that holds every
 repository, or as any one repository on its own. Both shapes give the same
 spelling, formatting, linting, task recipes, editor settings, and agent
 configuration — because none of those is configured per repository or per
@@ -115,7 +115,7 @@ means one meaning for every path, glob, and configuration lookup; a multi-root
 file gives each root its own meaning. The five concrete failures that rule out
 multi-root — glob anchoring, Copilot references, agent-configuration loading,
 gitignore-based hiding, and extension reloads — are recorded in the
-[workspace decision](../../charter/DECISIONS.md#never-open-aurora-as-a-multi-root-vs-code-workspace).
+[workspace decision](../../charter/DECISIONS.md#never-open-workspace-as-a-multi-root-vs-code-workspace).
 
 The switch between shapes is just which folder opens. Nothing inside a
 repository changes, because nothing was ever configured for a window.

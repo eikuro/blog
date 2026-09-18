@@ -4,14 +4,14 @@ type: index
 description: Chrono index, repository notes, and reading order
 ---
 
-# Aurora Chrono
+# Workspace Chrono
 
 Engineering write-ups about how this workspace is built and operated: the
 architecture decisions behind its boundaries, the tooling that materialises
 configuration, and the practices that keep a family of independent
 repositories consistent.
 
-Read Chrono online at <https://eikuro.github.io/chrono/>.
+Read Chrono online at <https://organisation.github.io/chrono/>.
 
 Posts are one Markdown file each under `posts/`.
 
@@ -25,7 +25,7 @@ Posts are one Markdown file each under `posts/`.
   declares `config: ../jsmap` and links the shared spelling, lint, editor, and
   VS Code configuration; `agents: ../.agents` mounts the shared agent tree.
   Materialise with `porter config`; check for drift with `porter config --dry`.
-- Cross-repository links in posts assume the Aurora workspace checkout, where
+- Cross-repository links in posts assume the workspace checkout, where
   every member repository sits beside this one.
 - Spelling and lint use the shared configuration; run `cspell` and
   `markdownlint-cli2` over changed Markdown before committing.

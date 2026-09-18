@@ -13,7 +13,7 @@ name: chrono
 type: template
 description: Engineering blog.
 
-github: eikuro
+github: organisation
 
 ci: ""
 

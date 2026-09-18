@@ -14,25 +14,25 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href={`${baseUrl}/eikuro.png`} />
+    <link rel="icon" type="image/png" href={`${baseUrl}/organisation.png`} />
     <link rel="canonical" href={Astro.url} />
-    <title>{title} | Aurora Chrono</title>
+    <title>{title} | Workspace Chrono</title>
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href={`${import.meta.env.BASE_URL}`}>
         <span class="brand-copy">
-          <strong>Aurora</strong>
+          <strong>Workspace</strong>
           <small>Engineering notes</small>
         </span>
       </a>
-      <a class="header-link" href="https://github.com/eikuro/chrono">GitHub</a>
+      <a class="header-link" href="https://github.com/organisation/chrono">GitHub</a>
     </header>
     <main>
       <slot />
     </main>
     <footer class="site-footer">
-      <span>Aurora Chrono</span>
+      <span>Workspace Chrono</span>
       <span>{new Date().getFullYear()}</span>
     </footer>
   </body>
