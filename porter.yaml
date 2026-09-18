@@ -7,21 +7,30 @@ private: true
 
 languages:
   - markdown
+  - typescript
 
 name: blog
 type: template
 
-github: ""
+github: eikuro
 
-ci: ""
+ci: ''
 
 #
 # component repo config
 #
 
-config: ../pymap
+config: ../jsmap
 
 # config file declaration
+
+copy:
+  - .github/workflows/ci.yml
+  - .gitattributes
+  - .node-version
+  - .npmrc
+  - .prettierignore
+  - .prettierrc.json
 
 symlink:
   - .cspell

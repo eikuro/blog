@@ -3,10 +3,10 @@
 # # comment
 #   Comments begin with #; escape it as \# when matching a literal #.
 #
-# example.py
+# example.ts
 #   Without /, the pattern matches at any directory level.
 #
-# /example.py
+# /example.ts
 #   A leading / anchors the pattern to this repository root.
 #
 # example/
@@ -15,92 +15,94 @@
 #   - <symlink>/ would match the directory content
 #   - <symlink> would only match the symlink itself
 #
-# *.pyc
-#   * matches any characters except /. This matches *.pyc at any level.
+# *.vsix
+#   * matches any characters except /. This matches *.vsix at any level.
 #
 # a/**/b
 #   ** matches zero or more directories, so this matches a/b and a/x/y/b.
 #
-# /**.pyc
-#   This is root-anchored and is not equivalent to *.pyc.
+# /**.vsix
+#   This is root-anchored and is not equivalent to *.vsix.
 #
 # ?.tmp and [abc].tmp
 #   ? matches one character; [abc] matches one listed character.
 #
-# !example.py
+# !example.ts
 #   ! re-includes a path. Rules are applied top to bottom, so order matters.
 #
 # output/*
 #   Ignore a directory's contents while keeping the directory itself.
 #   A negation cannot re-include a file inside an ignored parent directory.
 
-
 #
 #   Blacklist
 #
 
-# Global Conventions
+# global conventions
+# > a leading dot and a leading underscore are ignored everywhere; the whitelist
+# > below re-includes the paths a repository commits on purpose
 .*
 _*
 
 # credentials
 *.crt
 
+# dependencies
+/node_modules/
+
+# build and packaging output
+.vscode-test/
+coverage/
+dist/
+out/
+releases/
+*.vsix
+
 # runtime output
 # > ignore any root cache directories
-# > keep the output directory but not its content
-# > ignore the storage symlink
+# > ignore the shared storage mount, which holds data outside the repository
 /*cache*
-/output/*
 /storage
 
 # tooling output files
-*.egg-info
 *.log
-*nbqa*.py
+*.tsbuildinfo
+.eslintcache
 
-# root local config files
-/cspell.config.yaml
-/justfile
-
-# root folders for tooling
-/*log*
-/build/
-/dist/
-/Formula/
-/report/
-/temp/
-/tmp/
-
-# .agents symlinks
+# consumer-only config and agent symlinks
+/.agents
+/.claude
+/.codex
 /.github/copilot-instructions.md
 /.github/hooks
+/.mcp.json
 /AGENTS.md
-harnesses/claude/skills/
+
+# porter-materialised tool links and scratch space
+/tmp/
 
 
 #
 #   Whitelist
 #
 
-# allow __ module files (e.g. __init__.py); __ dirs like __pycache__ stay ignored
-!__*.*
+# allow __ module paths (e.g. __tests__/, __mocks__/); a single _ stays ignored
+!__*/
 
 # allow common Git metadata files
 # > !.git* also matches .git, but git hard-codes skipping the .git dir
 !.git*
 
-# allow ci required config folders
-!/.ci/
-!/.infra/
-
-# allow ci required config files
-!/.coveragerc
-!/.env-*template*
-!/.python-version
+# allow config files a consumer receives as copies rather than symlinks
+!/.node-version
+!/.npmrc
+!/.pre-commit-config.yaml
+!/.prettierignore
+!/.prettierrc.json
 
 # allowed symlinked content for agent discovery
-# > trailing / matches directories only, so symlinks stay untracked
+# > a trailing / matches directories only, so a materialised symlink stays
+# > untracked while a real directory keeps its content visible
 !/.agents/
 !/.vscode/
 
@@ -108,20 +110,26 @@ harnesses/claude/skills/
 #   Exceptions
 #
 
-# Serena defect workaround
-# > `gather_source_files` walks with followlinks=True and matches with pathspec,
-# > not git, so `!/.agents/` above un-ignores this self-link subtree; this rule
-# > must be the last match or the walk hits ELOOP and re-enumerates the shared
-# > tree once per level. Porter recreates the link, so it cannot be deleted.
+# Serena defect workaround: `gather_source_files` walks with followlinks=True
+# and matches with pathspec, not git, where a `/dir/` negation un-ignores the
+# whole subtree. `!/.agents/` above therefore re-includes this self-link unless
+# this rule is the last match; without it the walk descends the loop to the
+# symlink limit (ELOOP on open) and re-enumerates the shared tree once per
+# level. git needs no such rule, and the link cannot be deleted because porter
+# recreates it.
 .agents/.agents
 
-# File-walker workaround
-# > `!.git*` above keeps `.gitignore`, `.gitattributes`, and `.gitkeep` trackable
-# > under `.*`, but walkers that read gitignore files as their ignore source
-# > (ripgrep, VS Code search, fd) also un-hide real `.git` stores with it; git
-# > itself hard-codes skipping `.git`, so this must stay the last match.
+# File-walker workaround: the `!.git*` whitelist above keeps `.gitignore`,
+# `.gitattributes`, and `.gitkeep` trackable under `.*`, but walkers that read
+# gitignore files as their ignore source (ripgrep, VS Code search, fd) also
+# un-hide real `.git` directories with it; git itself hard-codes skipping
+# `.git` and needs no rule. This re-ignores every repository's object store
+# and must stay the last match for those paths.
 .git/
 
 #
 #   Repo-specific Entries
 #
+
+# consumer-only config and agent symlinks
+/cspell.config.yaml

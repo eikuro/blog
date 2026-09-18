@@ -1,0 +1,24 @@
+{
+  "name": "aurora-blog",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Markdown-based Aurora engineering blog.",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": "^24.0.0"
+  },
+  "scripts": {
+    "build": "astro build",
+    "check": "prettier --check . && astro check && astro build",
+    "dev": "astro dev",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "preview": "astro preview"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "astro": "^7.3.3",
+    "prettier": "^3.8.2",
+    "typescript": "^5.9.3"
+  }
+}
