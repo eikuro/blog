@@ -1,15 +1,17 @@
 ---
 name: readme
 type: index
-description: Blog index, repository notes, and reading order
+description: Chrono index, repository notes, and reading order
 ---
 
-# Aurora Blog
+# Aurora Chrono
 
 Engineering write-ups about how this workspace is built and operated: the
 architecture decisions behind its boundaries, the tooling that materialises
 configuration, and the practices that keep a family of independent
 repositories consistent.
+
+Read Chrono online at <https://eikuro.github.io/chrono/>.
 
 Posts are one Markdown file each under `posts/`.
 

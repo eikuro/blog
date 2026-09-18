@@ -9,12 +9,14 @@ languages:
   - markdown
   - typescript
 
-name: blog
+name: chrono
 type: template
+description: >-
+  Engineering write-ups about how the Aurora workspace is built and operated.
 
 github: eikuro
 
-ci: ''
+ci: ""
 
 #
 # component repo config

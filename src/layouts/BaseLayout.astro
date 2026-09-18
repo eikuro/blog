@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { description, title } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <!doctype html>
@@ -13,8 +14,9 @@ const { description, title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href={`${baseUrl}/eikuro.png`} />
     <link rel="canonical" href={Astro.url} />
-    <title>{title} | Aurora Blog</title>
+    <title>{title} | Aurora Chrono</title>
   </head>
   <body>
     <header class="site-header">
@@ -24,13 +26,13 @@ const { description, title } = Astro.props;
           <small>Engineering notes</small>
         </span>
       </a>
-      <a class="header-link" href="https://github.com/eikuro/blog">GitHub</a>
+      <a class="header-link" href="https://github.com/eikuro/chrono">GitHub</a>
     </header>
     <main>
       <slot />
     </main>
     <footer class="site-footer">
-      <span>Aurora Blog</span>
+      <span>Aurora Chrono</span>
       <span>{new Date().getFullYear()}</span>
     </footer>
   </body>
